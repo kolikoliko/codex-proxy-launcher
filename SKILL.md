@@ -1,15 +1,18 @@
 ---
 name: codex-proxy-launcher
-description: Create, verify, or repair a Windows launcher for the Codex desktop app that starts Codex with local proxy environment variables and Electron/Chromium proxy flags. Use when Codex itself shows reconnecting, the user wants Codex to use Clash/verge-mihomo/127.0.0.1 proxy, or the user asks for a desktop shortcut to start Codex through a proxy without changing global Windows, git, npm, or system proxy settings.
+description: Create, verify, or repair a Windows-only launcher for the Codex desktop app that starts Codex with local proxy environment variables and Electron/Chromium proxy flags. Use on Windows when Codex itself shows reconnecting, the user wants Codex to use Clash/verge-mihomo/127.0.0.1 proxy, or the user asks for a desktop shortcut to start Codex through a proxy without changing global Windows, git, npm, or system proxy settings. Do not use on macOS or Linux except to explain that the bundled script is Windows-specific.
 ---
 
 # Codex Proxy Launcher
 
-Use this skill to make Codex desktop networking use a local proxy without changing global proxy settings.
+Use this Windows-only skill to make Codex desktop networking use a local proxy without changing global proxy settings.
+
+This skill depends on Windows PowerShell, Windows `.lnk` shortcuts, COM `WScript.Shell`, and Windows Codex install paths. On macOS or Linux, explain that the bundled automation is not supported and do not run the script.
 
 ## Workflow
 
 1. Detect or choose the proxy endpoint.
+   - First confirm the host OS is Windows. Stop if it is not Windows.
    - Prefer an active local proxy listener if present.
    - Common ports: `7890`, `7897`, `7899`, `1080`, `10808`, `10809`, `20171`, `2080`, `8080`, `8118`.
    - For `verge-mihomo`, `127.0.0.1:7890` is a common HTTP/SOCKS mixed port.

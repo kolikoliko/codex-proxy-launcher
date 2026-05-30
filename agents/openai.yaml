@@ -1,6 +1,6 @@
 interface:
   display_name: "Codex Proxy Launcher"
-  short_description: "Start Codex through a local proxy."
+  short_description: "Start Windows Codex through a proxy."
   default_prompt: "Use $codex-proxy-launcher to set up or refresh my Codex proxy launcher and desktop shortcut."
 
 policy:

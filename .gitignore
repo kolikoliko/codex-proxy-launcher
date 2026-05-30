@@ -1,0 +1,15 @@
+# Local launcher output
+Launch-Codex-With-Proxy.cmd
+Launch-Codex-With-Proxy.ps1
+*.lnk
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak

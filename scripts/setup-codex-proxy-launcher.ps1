@@ -9,6 +9,10 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+if (-not $IsWindows -and $PSVersionTable.PSEdition -eq "Core") {
+  throw "codex-proxy-launcher only supports Windows."
+}
+
 function Find-ProxyPort {
   param([int[]]$Ports)
 
@@ -77,7 +81,9 @@ $launcherContent = @"
 `$codexExe = '$codexExeLiteral'
 
 if (-not (Test-Path `$codexExe)) {
-  `$process = Get-Process -Name Codex -ErrorAction SilentlyContinue | Where-Object { `$_.Path } | Select-Object -First 1
+  `$process = Get-Process -Name Codex -ErrorAction SilentlyContinue |
+    Where-Object { `$_.Path -and ((Split-Path `$_.Path -Leaf) -ceq "Codex.exe") } |
+    Select-Object -First 1
   if (`$process) { `$codexExe = `$process.Path }
 }
 
