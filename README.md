@@ -21,7 +21,7 @@ macOS and Linux are not supported by this script.
 ## What It Does
 
 - Finds a local proxy port, defaulting to common ports such as `7890`.
-- Finds the Codex desktop `Codex.exe`.
+- Finds the Codex desktop `Codex.exe` from the running process, `Get-AppxPackage`, or the newest `OpenAI.Codex_*` WindowsApps package directory.
 - Generates a launcher under:
 
 ```text
@@ -29,6 +29,7 @@ macOS and Linux are not supported by this script.
 ```
 
 - Optionally creates or refreshes a desktop shortcut named `Codex Proxy.lnk`.
+- Builds a stable local `.ico` from the Codex AppX logo assets so the shortcut icon does not disappear when Codex updates its WindowsApps package version.
 - Starts Codex with process-scoped proxy environment variables and Electron/Chromium proxy flags.
 
 It does not change Windows global proxy, permanent user environment variables, git config, npm config, or WinHTTP settings.
@@ -68,6 +69,8 @@ Use a specific Codex executable:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\setup-codex-proxy-launcher.ps1 -CodexExe "C:\path\to\Codex.exe" -CreateDesktopShortcut
 ```
+
+`-CodexExe` is only a setup-time hint. The generated launcher re-detects Codex at startup, so it can survive package updates such as `OpenAI.Codex_26.527...` becoming `OpenAI.Codex_26.601...`.
 
 ## Verify
 

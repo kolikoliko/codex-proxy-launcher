@@ -19,15 +19,19 @@ This skill depends on Windows PowerShell, Windows `.lnk` shortcuts, COM `WScript
 
 2. Locate Codex.
    - Prefer the currently running `Codex.exe` path from `Get-Process -Name Codex`.
-   - Fall back to installed WindowsApps paths matching `OpenAI.Codex_*`.
+   - Fall back to `Get-AppxPackage -Name OpenAI.Codex`.
+   - Fall back to installed WindowsApps package directories matching `OpenAI.Codex_*`, sorted by package version.
+   - Never permanently rely on a literal `C:\Program Files\WindowsApps\OpenAI.Codex_<version>...\app\Codex.exe` path; the package version changes when Codex updates.
 
 3. Create or refresh a launcher script.
    - Use `scripts/setup-codex-proxy-launcher.ps1`.
    - The launcher should scope proxy settings to the Codex process tree only.
+   - The generated launcher should resolve `Codex.exe` again when it starts, so it survives Codex package updates.
    - Do not set global Windows proxy, `git config`, `npm config`, or permanent user environment variables unless the user explicitly asks.
 
 4. Create a desktop shortcut when requested.
    - The shortcut should point to a generated `.cmd` shim, not directly to a fragile one-off terminal command.
+   - The shortcut icon should point to the stable generated icon under `%LOCALAPPDATA%\OpenAI\CodexProxyLauncher\CodexApp.ico` when available, not the versioned WindowsApps executable path.
    - If a shortcut already exists, update it in place.
 
 5. Verify.
@@ -50,6 +54,7 @@ Useful options:
 powershell -ExecutionPolicy Bypass -File scripts\setup-codex-proxy-launcher.ps1 -ProxyPort 7890 -CreateDesktopShortcut
 
 # Use a specific Codex executable path.
+# This is only a setup-time hint; the generated launcher still auto-discovers Codex after updates.
 powershell -ExecutionPolicy Bypass -File scripts\setup-codex-proxy-launcher.ps1 -CodexExe "C:\path\to\Codex.exe" -CreateDesktopShortcut
 ```
 
